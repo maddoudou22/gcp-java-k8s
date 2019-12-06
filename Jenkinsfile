@@ -36,7 +36,7 @@ pipeline {
 		stage('OWASP - Dependencies check') {
             steps {
                 echo 'Check OWASP dependencies ...'
-				sh 'mvn dependency-check:check'
+				sh 'mvn dependency-check:check -Ddownloader.quick.query.timestamp=false'
             }
         }
 		
