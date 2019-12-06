@@ -33,13 +33,14 @@ pipeline {
             }
         }
 */
+/*
 		stage('OWASP - Dependencies check') {
             steps {
                 echo 'Check OWASP dependencies ...'
 				sh 'mvn dependency-check:check -Ddownloader.quick.query.timestamp=false'
             }
         }
-		
+*/		
 		stage('Sonar - Code Quality') {
             steps {
                 echo 'Check Code Quality ...'
