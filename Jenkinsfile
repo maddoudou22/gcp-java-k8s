@@ -2,7 +2,7 @@ pipeline {
     agent any
 	
 	environment {
-		package_version = readMavenPom().getVersion()
+		//package_version = readMavenPom().getVersion()
 		dockerRegistry = "devops.maddoudou.click:5000"
 		dockerRepo = "gcp-java-k8s"
 		applicationName = 'gcp-java-k8s' // Same as artifactId in pom.xml
