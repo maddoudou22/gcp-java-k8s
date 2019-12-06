@@ -3,7 +3,7 @@ echo off
 
 SET nom_Projet_Git=gcp-java-k8s
 SET URL_Projet_Git=https://github.com/maddoudou22/gcp-java-k8s.git
-SET Repertoire_Local_Projet=C:\awsLambda\java\gcp-java-k8s
+SET Repertoire_Local_Projet=C:\awsLambda\GCP\gcp-java-k8s
 
 cd %Repertoire_Local_Projet%
 
