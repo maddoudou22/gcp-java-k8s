@@ -25,14 +25,14 @@ pipeline {
 				sh 'mvn test'
             }
         }
-
+/*
 		stage('Publish snapshot') {
             steps {
                 echo 'Publising into the snapshot repo ...'
 				sh 'mvn jar:jar deploy:deploy'
             }
         }
-		
+*/
 		stage('OWASP - Dependencies check') {
             steps {
                 echo 'Check OWASP dependencies ...'
