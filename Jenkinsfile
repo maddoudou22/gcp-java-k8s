@@ -6,7 +6,7 @@ pipeline {
 		dockerRegistry = "devops.maddoudou.click:5000"
 		dockerRepo = "gcp-java-k8s"
 		applicationName = 'gcp-java-k8s' // Same as artifactId in pom.xml
-		//kubernetesNode = 'rancher.maddoudou.clic'
+		//kubernetesNode = 'rancher.maddoudou.click'
 		//deploymentConfigurationPathSource = "deploy-k8s" // Location of the K8s deployment configuration on the pipeline instance
 		//deploymentConfigurationPathKubernetes = "/home/ubuntu/k8s-deployments" // Location of the K8s deployment configuration on the K8s instace
     }
@@ -33,14 +33,14 @@ pipeline {
             }
         }
 */
-/*
+
 		stage('OWASP - Dependencies check') {
             steps {
                 echo 'Check OWASP dependencies ...'
 				sh 'mvn dependency-check:check -Ddownloader.quick.query.timestamp=false'
             }
         }
-*/		
+		
 		stage('Sonar - Code Quality') {
             steps {
                 echo 'Check Code Quality ...'
