@@ -32,7 +32,6 @@ pipeline {
 				sh 'mvn jar:jar deploy:deploy'
             }
         }
-*/
 
 		stage('OWASP - Dependencies check') {
             steps {
@@ -47,7 +46,7 @@ pipeline {
 				sh 'mvn sonar:sonar' // -Dsonar.dependencyCheck.reportPath=target/dependency-check-report.xml'
             }
         }
-/*		
+		
         stage('Contract testing') {
             steps {
                 echo 'Testing application conformity according to its Swagger definition ...'
