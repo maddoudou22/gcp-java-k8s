@@ -10,7 +10,7 @@ pipeline {
 		dockerRegistry = "devops.maddoudou.click:5000"
 		dockerRepo = "gcp-java-k8s"
 		applicationName = 'gcp-java-k8s' // Same as artifactId in pom.xml
-		SONAR_ENDPOINT " "http://34.89.207.78:9000"
+		SONAR_ENDPOINT = "http://34.89.207.78:9000"
 		SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY = "/home/ubuntu/.m2"
 		SLAVE_LOCAL_ARTEFACTS_DIRECTORY = "/var/lib/jenkins/workspace/gcp-java-k8s/target"
 		GCS_BUCKET_MAVEN_DEPENDENCIES = "gs://jenkins-gcp-preemptible/.m2/"
