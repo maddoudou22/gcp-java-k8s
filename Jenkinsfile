@@ -64,8 +64,8 @@ pipeline {
 		stage('Artifacts upload') {
             steps {
 				echo 'Copying the generated artefacts to a GCS bucket ...'
-				sh 'mv target artefacts-$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')'
-				sh 'gsutil cp artefacts-$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS'
+				sh "mv target artefacts-$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')"
+				sh "gsutil cp artefacts-$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS"
 			}
         }
 		
