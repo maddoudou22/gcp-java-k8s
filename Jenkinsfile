@@ -10,11 +10,23 @@ pipeline {
 		dockerRegistry = "devops.maddoudou.click:5000"
 		dockerRepo = "gcp-java-k8s"
 		applicationName = 'gcp-java-k8s' // Same as artifactId in pom.xml
+		SONAR_ENDPOINT " "http://34.89.207.78:9000"
+		SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY = "/home/ubuntu/.m2"
+		SLAVE_LOCAL_ARTEFACTS_DIRECTORY = "/var/lib/jenkins/workspace/gcp-java-k8s/target"
+		GCS_BUCKET_MAVEN_DEPENDENCIES = "gs://jenkins-gcp-preemptible/.m2/"
+		GCS_BUCKET_ARTEFACTS = "gs://jenkins-gcp-preemptible/artefacts/"
 		//kubernetesNode = 'rancher.maddoudou.click'
 		//deploymentConfigurationPathSource = "deploy-k8s" // Location of the K8s deployment configuration on the pipeline instance
 		//deploymentConfigurationPathKubernetes = "/home/ubuntu/k8s-deployments" // Location of the K8s deployment configuration on the K8s instace
     }
     stages {
+	
+		stage('Download dependencies from Cloud Storage') {
+            steps {
+				echo 'Get the cached maven dependencies from a GCS bucket ...'
+				sh 'gsutil cp $GCS_BUCKET_MAVEN_DEPENDENCIES $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY'
+			}
+			
         stage('Build') {
             steps {
                 echo 'Building ...'
@@ -22,42 +34,36 @@ pipeline {
 				sh 'mvn -T 10 -Dmaven.test.skip=true clean package'
             }
         }
-/*		
+		
 		stage('Unit test') {
             steps {
                 echo 'Unit testing ...'
-				sh 'mvn test'
+				sh 'mvn -T 1C test'
             }
         }
 
-		stage('Publish snapshot') {
-            steps {
-                echo 'Publising into the snapshot repo ...'
-				sh 'mvn jar:jar deploy:deploy'
-            }
-        }
-
+/*
 		stage('OWASP - Dependencies check') {
             steps {
                 echo 'Check OWASP dependencies ...'
-				sh 'mvn dependency-check:check -Ddownloader.quick.query.timestamp=false'
+				sh 'mvn dependency-check:check'
             }
         }
-		
+*/		
 		stage('Sonar - Code Quality') {
             steps {
                 echo 'Check Code Quality ...'
-				sh 'mvn sonar:sonar' // -Dsonar.dependencyCheck.reportPath=target/dependency-check-report.xml'
+				sh 'mvn sonar:sonar -Dsonar.host.url=$SONAR_ENDPOINT' // -Dsonar.dependencyCheck.reportPath=target/dependency-check-report.xml'
             }
         }
 		
-        stage('Contract testing') {
+		stage('Artifacts upload') {
             steps {
-                echo 'Testing application conformity according to its Swagger definition ...'
-
-            }
+				echo 'Copying the generated artefacts to a GCS bucket ...'
+				sh 'gsutil cp $applicationName* $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_ARTEFACTS'
+			}
         }
-*/
+		
 /*		
         stage('Bake') {
             steps {
@@ -70,6 +76,13 @@ pipeline {
             }
         }
 */
+		stage('Dependencies sync') {
+            steps {
+				echo 'Copying the maven dependencies to the GCS bucket ...'
+				sh 'gsutil """cp""" $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
+			}
+        }
+
 /*
 		stage('Deploy') {
             steps {
