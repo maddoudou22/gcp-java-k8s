@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+	agent { 
+        node {
+			label 'jenkins-gcp-preemptible' // Label de flotte specifie dans la configuration du plugin Google Compute Engine
+		}
+	}
 	
 	environment {
 		//package_version = readMavenPom().getVersion()
