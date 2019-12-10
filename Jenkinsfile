@@ -26,7 +26,8 @@ pipeline {
 				echo 'Get the cached maven dependencies from a GCS bucket ...'
 				sh 'gsutil cp $GCS_BUCKET_MAVEN_DEPENDENCIES $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY'
 			}
-			
+		}
+		
         stage('Build') {
             steps {
                 echo 'Building ...'
