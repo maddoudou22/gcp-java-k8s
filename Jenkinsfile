@@ -14,7 +14,7 @@ pipeline {
 		applicationName = 'gcp-java-k8s' // Same as artifactId in pom.xml
 		SONAR_ENDPOINT = "http://34.89.250.156:9000"
 		SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY = "/home/jenkins/.m2"
-		GCS_BUCKET_MAVEN_DEPENDENCIES = "gs://jenkins-gcp-preemptible/.m2/"
+		GCS_BUCKET_MAVEN_DEPENDENCIES = "gs://jenkins-gcp-preemptible/.m2"
 		GCS_BUCKET_ARTEFACTS = "gs://jenkins-gcp-preemptible/artefacts/"
 		//kubernetesNode = 'rancher.maddoudou.click'
 		//deploymentConfigurationPathSource = "deploy-k8s" // Location of the K8s deployment configuration on the pipeline instance
@@ -25,7 +25,8 @@ pipeline {
 		stage('Download dependencies from Cloud Storage') {
             steps {
 				echo 'Get the cached maven dependencies from a GCS bucket ...'
-				sh 'gsutil -m cp -n -r $GCS_BUCKET_MAVEN_DEPENDENCIES $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY'
+				sh 'mkdir $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY'
+				sh 'gsutil -m cp -n -r $GCS_BUCKET_MAVEN_DEPENDENCIES/* $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY'
 			}
 		}
 		
@@ -66,7 +67,7 @@ pipeline {
 		stage('Dependencies sync') {
             steps {
 				echo 'Copying the maven dependencies to the GCS bucket ...'
-				sh 'gsutil -m cp -n -r $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
+				sh 'gsutil -m cp -n -r $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY/* $GCS_BUCKET_MAVEN_DEPENDENCIES'
 			}
         }
 		
