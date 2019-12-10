@@ -2,8 +2,8 @@ pipeline {
 	agent { 
         node {
 			label 'jenkins-gcp-preemptible' // Label de flotte specifie dans la configuration du plugin Google Compute Engine
-			 def dateFormat = new SimpleDateFormat("yyyyMMddHHmm")
-			 def current_date = new Date()
+			 //def dateFormat = new SimpleDateFormat("yyyyMMddHHmm")
+			 //def current_date = new Date()
 		}
 	}
 	
@@ -12,7 +12,7 @@ pipeline {
 		dockerRegistry = "devops.maddoudou.click:5000"
 		dockerRepo = "gcp-java-k8s"
 		applicationName = 'gcp-java-k8s' // Same as artifactId in pom.xml
-		SONAR_ENDPOINT = "http://34.89.207.78:9000"
+		SONAR_ENDPOINT = "http://34.89.250.156:9000"
 		SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY = "/home/jenkins/.m2"
 		GCS_BUCKET_MAVEN_DEPENDENCIES = "gs://jenkins-gcp-preemptible/.m2/"
 		GCS_BUCKET_ARTEFACTS = "gs://jenkins-gcp-preemptible/artefacts/"
@@ -28,7 +28,7 @@ pipeline {
 				sh 'gsutil cp $GCS_BUCKET_MAVEN_DEPENDENCIES $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY'
 			}
 		}
-		
+/*		
         stage('Build') {
             steps {
                 echo 'Building ...'
@@ -36,6 +36,7 @@ pipeline {
 				sh 'mvn -T 10 -Dmaven.test.skip=true clean package'
             }
         }
+*/
 /*		
 		stage('Unit test') {
             steps {
@@ -66,10 +67,12 @@ pipeline {
 		stage('Artifacts upload') {
             steps {
 				echo 'Copying the generated artefacts to a GCS bucket ...'
-				sh 'mv target artefacts-$current_date'
-				sh 'echo $current_date'
-				echo $current_date
-				//sh "gsutil cp artefacts-$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS"
+				//sh 'mv target artefacts-<date>'
+				//sh 'echo $current_date'
+				//echo $current_date
+				sh 'mkdir target'
+				sh 'touch target/coucou'
+				sh "gsutil cp artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS"
 			}
         }
 		
