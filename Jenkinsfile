@@ -66,7 +66,7 @@ pipeline {
 		stage('Dependencies sync') {
             steps {
 				echo 'Copying the maven dependencies to the GCS bucket ...'
-				sh 'gsutil cp $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
+				sh 'gsutil cp -r $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
 			}
         }
 		
@@ -74,7 +74,8 @@ pipeline {
             steps {
 				echo 'Copying the generated artefacts to a GCS bucket ...'
 				//sh 'rm -rf target'
-				sh "gsutil cp target/artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS"
+				sh "mv target artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')"
+				sh "gsutil cp -r artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS"
 			}
         }
 
