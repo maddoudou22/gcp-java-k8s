@@ -35,13 +35,14 @@ pipeline {
 				sh 'mvn -T 10 -Dmaven.test.skip=true clean package'
             }
         }
-		
+/*		
 		stage('Unit test') {
             steps {
                 echo 'Unit testing ...'
 				sh 'mvn -T 1C test'
             }
         }
+*/
 
 /*
 		stage('OWASP - Dependencies check') {
@@ -51,6 +52,8 @@ pipeline {
             }
         }
 */		
+
+/*
 		stage('Sonar - Code Quality') {
             steps {
                 echo 'Check Code Quality ...'
@@ -58,13 +61,23 @@ pipeline {
             }
         }
 		
+		stage('Dependencies sync') {
+            steps {
+				echo 'Copying the maven dependencies to the GCS bucket ...'
+				sh 'gsutil """cp""" $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
+			}
+        }
+
 		stage('Artifacts upload') {
             steps {
 				echo 'Copying the generated artefacts to a GCS bucket ...'
-				sh 'gsutil cp $applicationName* $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_ARTEFACTS'
+				sh 'pwd'
+				sh 'ls -a'
+				sh 'gsutil cp $applicationName* $GCS_BUCKET_ARTEFACTS'
 			}
         }
-		
+*/		
+
 /*		
         stage('Bake') {
             steps {
@@ -77,12 +90,6 @@ pipeline {
             }
         }
 */
-		stage('Dependencies sync') {
-            steps {
-				echo 'Copying the maven dependencies to the GCS bucket ...'
-				sh 'gsutil """cp""" $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
-			}
-        }
 
 /*
 		stage('Deploy') {
