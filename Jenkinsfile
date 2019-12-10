@@ -11,13 +11,13 @@ pipeline {
 		dockerRepo = "gcp-java-k8s"
 		applicationName = 'gcp-java-k8s' // Same as artifactId in pom.xml
 		SONAR_ENDPOINT = "http://34.89.207.78:9000"
-		SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY = "/home/ubuntu/.m2"
+		SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY = "/home/jenkins/.m2"
 		SLAVE_LOCAL_ARTEFACTS_DIRECTORY = "/var/lib/jenkins/workspace/gcp-java-k8s/target"
 		GCS_BUCKET_MAVEN_DEPENDENCIES = "gs://jenkins-gcp-preemptible/.m2/"
 		GCS_BUCKET_ARTEFACTS = "gs://jenkins-gcp-preemptible/artefacts/"
 		//kubernetesNode = 'rancher.maddoudou.click'
 		//deploymentConfigurationPathSource = "deploy-k8s" // Location of the K8s deployment configuration on the pipeline instance
-		//deploymentConfigurationPathKubernetes = "/home/ubuntu/k8s-deployments" // Location of the K8s deployment configuration on the K8s instace
+		//deploymentConfigurationPathKubernetes = "/home/jenkins/k8s-deployments" // Location of the K8s deployment configuration on the K8s instace
     }
     stages {
 	
