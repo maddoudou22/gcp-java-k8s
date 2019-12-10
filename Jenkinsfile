@@ -70,9 +70,9 @@ pipeline {
 				//sh 'mv target artefacts-<date>'
 				//sh 'echo $current_date'
 				//echo $current_date
-				sh 'mkdir target2'
-				sh "touch target2/artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')"
-				sh "ls"
+				sh 'mkdir target3'
+				sh "touch target3/artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')"
+				sh "ls target3/"
 				sh "gsutil cp artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS"
 			}
         }
