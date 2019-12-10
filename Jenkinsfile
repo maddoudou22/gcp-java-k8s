@@ -25,7 +25,7 @@ pipeline {
 		stage('Download dependencies from Cloud Storage') {
             steps {
 				echo 'Get the cached maven dependencies from a GCS bucket ...'
-				sh 'gsutil cp $GCS_BUCKET_MAVEN_DEPENDENCIES $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY'
+				sh 'gsutil -m cp -n -r $GCS_BUCKET_MAVEN_DEPENDENCIES $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY'
 			}
 		}
 		
@@ -66,7 +66,7 @@ pipeline {
 		stage('Dependencies sync') {
             steps {
 				echo 'Copying the maven dependencies to the GCS bucket ...'
-				sh 'gsutil cp -r $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
+				sh 'gsutil -m cp -n -r $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
 			}
         }
 		
@@ -76,7 +76,7 @@ pipeline {
 				//sh 'rm -rf target'
 				echo '${current_date}'
 				sh "mv target artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')"
-				sh 'gsutil cp -r artefacts-* $GCS_BUCKET_ARTEFACTS'
+				sh 'gsutil -m cp -n -r artefacts-* $GCS_BUCKET_ARTEFACTS'
 			}
         }
 
