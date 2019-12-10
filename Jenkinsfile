@@ -62,13 +62,6 @@ pipeline {
         }
 */
 		
-		stage('Dependencies sync') {
-            steps {
-				echo 'Copying the maven dependencies to the GCS bucket ...'
-				sh 'gsutil cp $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
-			}
-        }
-
 		stage('Artifacts upload') {
             steps {
 				echo 'Copying the generated artefacts to a GCS bucket ...'
@@ -77,7 +70,13 @@ pipeline {
 				sh 'gsutil cp $applicationName* $GCS_BUCKET_ARTEFACTS'
 			}
         }
-
+		
+		stage('Dependencies sync') {
+            steps {
+				echo 'Copying the maven dependencies to the GCS bucket ...'
+				sh 'gsutil cp $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
+			}
+        }
 
 /*		
         stage('Bake') {
