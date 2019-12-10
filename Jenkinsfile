@@ -12,7 +12,6 @@ pipeline {
 		applicationName = 'gcp-java-k8s' // Same as artifactId in pom.xml
 		SONAR_ENDPOINT = "http://34.89.207.78:9000"
 		SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY = "/home/jenkins/.m2"
-		SLAVE_LOCAL_ARTEFACTS_DIRECTORY = "/var/lib/jenkins/workspace/gcp-java-k8s/target"
 		GCS_BUCKET_MAVEN_DEPENDENCIES = "gs://jenkins-gcp-preemptible/.m2/"
 		GCS_BUCKET_ARTEFACTS = "gs://jenkins-gcp-preemptible/artefacts/"
 		//kubernetesNode = 'rancher.maddoudou.click'
@@ -65,9 +64,8 @@ pipeline {
 		stage('Artifacts upload') {
             steps {
 				echo 'Copying the generated artefacts to a GCS bucket ...'
-				sh 'pwd'
-				sh 'ls -a'
-				sh 'gsutil cp $applicationName* $GCS_BUCKET_ARTEFACTS'
+				sh 'mv target artefacts-$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')'
+				sh 'gsutil cp artefacts-$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS'
 			}
         }
 		
