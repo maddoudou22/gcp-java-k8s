@@ -2,6 +2,8 @@ pipeline {
 	agent { 
         node {
 			label 'jenkins-gcp-preemptible' // Label de flotte specifie dans la configuration du plugin Google Compute Engine
+			 def dateFormat = new SimpleDateFormat("yyyyMMddHHmm")
+			 def current_date = new Date()
 		}
 	}
 	
@@ -64,7 +66,9 @@ pipeline {
 		stage('Artifacts upload') {
             steps {
 				echo 'Copying the generated artefacts to a GCS bucket ...'
-				sh "mv target artefacts-$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')"
+				sh 'mv target artefacts-$current_date'
+				sh 'echo $current_date'
+				echo $current_date
 				sh "gsutil cp artefacts-$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS"
 			}
         }
