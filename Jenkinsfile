@@ -28,7 +28,7 @@ pipeline {
 				sh 'gsutil cp $GCS_BUCKET_MAVEN_DEPENDENCIES $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY'
 			}
 		}
-/*		
+		
         stage('Build') {
             steps {
                 echo 'Building ...'
@@ -36,7 +36,7 @@ pipeline {
 				sh 'mvn -T 10 -Dmaven.test.skip=true clean package'
             }
         }
-*/
+
 /*		
 		stage('Unit test') {
             steps {
