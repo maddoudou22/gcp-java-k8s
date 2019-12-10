@@ -12,7 +12,6 @@ pipeline {
 		dockerRegistry = "devops.maddoudou.click:5000"
 		dockerRepo = "gcp-java-k8s"
 		applicationName = 'gcp-java-k8s' // Same as artifactId in pom.xml
-		current_date = $(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')
 		SONAR_ENDPOINT = "http://34.89.250.156:9000"
 		SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY = "/home/jenkins/.m2"
 		GCS_BUCKET_MAVEN_DEPENDENCIES = "gs://jenkins-gcp-preemptible/.m2/"
@@ -77,7 +76,7 @@ pipeline {
 				//sh 'rm -rf target'
 				echo '${current_date}'
 				sh "mv target artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g')"
-				sh "gsutil cp -r artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS"
+				sh 'gsutil cp -r artefacts-* $GCS_BUCKET_ARTEFACTS'
 			}
         }
 
