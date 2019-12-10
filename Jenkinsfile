@@ -63,19 +63,18 @@ pipeline {
             }
         }
 */
+		stage('Dependencies sync') {
+            steps {
+				echo 'Copying the maven dependencies to the GCS bucket ...'
+				sh 'gsutil cp $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
+			}
+        }
 		
 		stage('Artifacts upload') {
             steps {
 				echo 'Copying the generated artefacts to a GCS bucket ...'
 				//sh 'rm -rf target'
 				sh "gsutil cp target/artefacts-\$(date +\"%Y%m%d%H%M%S\" | sed -e 's/\"//g') $GCS_BUCKET_ARTEFACTS"
-			}
-        }
-		
-		stage('Dependencies sync') {
-            steps {
-				echo 'Copying the maven dependencies to the GCS bucket ...'
-				sh 'gsutil cp $SLAVE_LOCAL_MAVEN_DEPENDENCIES_DIRECTORY $GCS_BUCKET_MAVEN_DEPENDENCIES'
 			}
         }
 
